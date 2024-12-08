@@ -1,16 +1,17 @@
 const express = require("express");
-const fs = require("fs");
 const app = express();
-const Joi = require("joi");
-var cors = require("cors");
-const userRoute = require("./routes/userRoutes");
-const postRoutes = require("./routes/postRoutes");
+const cors = require("cors");
+const allRoutes = require("./routes");
+const { logMiddleware } = require("./middlewares");
+const dotenv = require('dotenv');
 
+dotenv.config();
 const PORT = 5000;
 app.use(express.json());
 app.use(cors());
-app.use("/", userRoute);
-app.use("/post", postRoutes);
+
+app.use("/api", logMiddleware, allRoutes);
+
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });

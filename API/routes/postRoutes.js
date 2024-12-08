@@ -6,5 +6,5 @@ const Joi = require("joi");
 router.get("/", (req, res) => {
   res.json({ message: "Hello" });
 });
-
-module.exports = router;
+const postRoutes = router;
+module.exports = postRoutes;
