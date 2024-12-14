@@ -1,8 +1,13 @@
 {
   "data": [
     {
-      "id": 1,
-      "email": "test@test.com",
+      "id": "ae562739-5486-4aac-bfef-bd0190ce4296",
+      "email": "tests3@test.com",
+      "password": "123"
+    },
+    {
+      "id": "b0c03d01-195b-4f0b-bd5e-eb5b84533181",
+      "email": "tests@test.com",
       "password": "123"
     }
   ]
