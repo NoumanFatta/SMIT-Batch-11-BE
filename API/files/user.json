@@ -1,14 +1,1 @@
-{
-  "data": [
-    {
-      "id": "ae562739-5486-4aac-bfef-bd0190ce4296",
-      "email": "tests3@test.com",
-      "password": "123"
-    },
-    {
-      "id": "b0c03d01-195b-4f0b-bd5e-eb5b84533181",
-      "email": "tests@test.com",
-      "password": "123"
-    }
-  ]
-}
+{"data":[{"id":"b0c03d01-195b-4f0b-bd5e-eb5b84533181","email":"test@test.com","password":"123"},{"id":"65b94d3e-b738-4699-98d4-24f685968e7a","email":"test2@test.com","password":"123"}]}

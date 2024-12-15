@@ -26,9 +26,15 @@ const addFileData = (fileName, newData) => {
   };
   fs.writeFileSync(filePath, JSON.stringify(obj));
 };
+const appendFileData = (fileName, newData) => {
+  const data = getFileData(fileName);
+  data.data.push(newData);
+  addFileData(fileName, data.data);
+};
 module.exports = {
   generateAccessToken,
   getFileData,
   addFileData,
   verifyAccessToken,
+  appendFileData
 };
