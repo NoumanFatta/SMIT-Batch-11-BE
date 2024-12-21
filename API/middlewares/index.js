@@ -13,10 +13,11 @@ const authMiddleware = (req, res, next) => {
     }
     const payload = verifyAccessToken(token);
     const allUsers = getFileData(ENUMS.userFile);
-    const foundUser = allUsers.data.find((u) => u.id === payload.id);
+    const foundUser = allUsers.data.find((u) => u.id === payload.id && u.isActive);
     if (!foundUser) {
       return res.status(401).json({ message: "Token not valid" });
     }
+    delete foundUser.password
     req.user = foundUser;
     next();
   } catch (error) {
