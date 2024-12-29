@@ -2,7 +2,6 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 const mongoose = require("mongoose");
-const UserModel = require("./models/user.model");
 const allRoutes = require("./routes");
 const app = express();
 const connectDB = async () => {

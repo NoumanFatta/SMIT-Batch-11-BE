@@ -19,5 +19,8 @@ const TodoSchema = new mongoose.Schema({
     default: false,
   },
 });
+TodoSchema.post("save", function (doc) {
+  console.log(doc);
+});
 const TodoModel = mongoose.model("todo", TodoSchema);
 module.exports = TodoModel;

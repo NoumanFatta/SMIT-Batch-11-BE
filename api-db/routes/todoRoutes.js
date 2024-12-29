@@ -87,7 +87,6 @@ router.delete("/:id", async (req, res) => {
       createdBy: req.user._id,
       _id: req.params.id,
     });
-    console.log(updatedTodo);
     if (!updatedTodo.deletedCount) {
       return res.status(404).json({ message: "Todo not found!" });
     }

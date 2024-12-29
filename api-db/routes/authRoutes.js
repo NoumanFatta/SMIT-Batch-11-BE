@@ -2,6 +2,7 @@ const express = require("express");
 const UserModel = require("../models/user.model");
 const { generateAccessToken } = require("../utils/helper");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 router.post("/register", async (req, res) => {
   try {
@@ -22,7 +23,8 @@ router.post("/login", async (req, res) => {
     if (!foundUser) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    if (foundUser.password !== body.password) {
+    const isPasswordCorrect = await bcrypt.compare(body.password, foundUser.password)
+    if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
     const token = generateAccessToken(foundUser._id);

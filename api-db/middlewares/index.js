@@ -16,9 +16,7 @@ const authMiddleware = async (req, res, next) => {
     if (!foundUser) {
       return res.status(401).json({ message: "Token not valid" });
     }
-    const data = foundUser.toJSON();
-    delete data.password;
-    req.user = data;
+    req.user = foundUser;
     next();
   } catch (error) {
     res.status(401).json({ message: "Token not valid" });
