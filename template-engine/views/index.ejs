@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body>
+    <div class="container mt-2">
+      <header>
+        <h2>Welcome <%=myName.name%></h2>
+
+        <%if(myName.name === "Nouman"){%>
+        <h1>Nouman</h1>
+        <%}else{%>
+        <h1>Unknown</h1>
+        <%}%>
+      </header>
+      <section>
+        <%for (let index = 0; index < myName.fruits.length; index++) {%>
+        <p><%=myName.fruits[index]%></p>
+        <%}%>
+
+        <h2>Here is the body</h2>
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam,
+          repellendus!
+        </p>
+      </section>
+      <footer>
+        <h2>Here is the footer</h2>
+      </footer>
+      <form method="post" action="/profile" >
+        <input type="text" name = "name" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
