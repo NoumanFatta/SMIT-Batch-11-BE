@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Login Page</title>
+     <link rel="stylesheet" href="../stylesheets/style.css">
+</head>
+
+<body>
+     <div class="container">
+          <h1>Login</h1>
+          <form id="login">
+               <input type="email" id="login-email" placeholder="Email" required>
+               <input type="password" id="login-password" placeholder="Password" required>
+               <button type="submit">Login</button>
+          </form>
+          <div class="link">
+               Don't have an account? <a href="/">Sign up</a>
+          </div>
+     </div>
+
+     <script>
+          //
+          document.addEventListener("DOMContentLoaded", () => {
+
+               const loginForm = document.getElementById("login");
+               loginForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+
+                    const email = document.getElementById("login-email").value;
+                    const password = document.getElementById("login-password").value;
+
+                    // Send POST request to backend
+                    fetch("/api/auth/login", {
+                         method: "POST",
+                         headers: {
+                              "Content-Type": "application/json",
+                         },
+                         body: JSON.stringify({ email, password }),
+                    })
+                         .then((response) => response.json())
+                         .then((data) => {
+                              // document.getElementById("login-message").innerText = data.message;
+                              console.log('first', data)
+                              alert("logged in ")
+                              location.replace("/form")
+                              localStorage.setItem("token", data.data.token);
+                         })
+                         .catch((error) => {
+                              // document.getElementById("login-message").innerText =
+                              // "Error: " + error.message;
+                              alert('something is wrong')
+                         });
+               });
+          });
+
+     </script>
+
+</body>
+
+</html>

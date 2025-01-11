@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Create Form</title>
+     <link rel="stylesheet" href="../stylesheets/style.css">
+</head>
+
+<body>
+     <div class="container">
+          <h1>Create a New Form</h1>
+          <div style="padding-bottom: 10px;">
+               <label>
+                    <input type="radio" name="isPublic" value="true" required /> Public
+               </label>
+               <label>
+                    <input type="radio" name="isPublic" value="false" checked /> Private
+               </label>
+          </div>
+          <form id="form-creator">
+               <!-- Form Title -->
+               <div class="field-group">
+                    <input type="text" id="form-title" name="title" placeholder="Form Title" required>
+               </div>
+
+               <!-- Form Fields (Questions and Options) -->
+               <div id="fields-container">
+                    <div class="field-group">
+                         <input type="text" id="question-1" name="question-1" placeholder="Question 1" required>
+                         <input type="text" id="options-1" name="options-1" placeholder="Options (comma separated)">
+                    </div>
+               </div>
+
+               <!-- Button to Add More Fields -->
+               <button type="button" onclick="addField()">Add Another Field</button>
+
+               <!-- Submit Button -->
+               <button style="margin-top: 5px; margin-bottom: 5px;" type="submit">Submit Form</button>
+          </form>
+
+          <!-- Logout Button -->
+          <button style="background: rgb(219, 10, 10);" onclick="handleLogout()">Logout</button>
+
+          <!-- Response Message Area -->
+          <div id="response-message" style="margin-top: 20px; font-weight: bold;"></div>
+
+          <button><a href="" id="a" style="text-decoration: none;color: aliceblue;">Response Page</a></button>
+     </div>
+
+     <script>
+          // frontend simple auth
+          if (!localStorage.getItem('token')) {
+               location.replace('/login')
+               alert('Login kar k aao....')
+          }
+
+          let fieldCount = 1;
+
+          // Function to add more fields dynamically
+          function addField() {
+               fieldCount++;
+               const fieldsContainer = document.getElementById('fields-container');
+               const newFieldGroup = document.createElement('div');
+               newFieldGroup.className = 'field-group';
+               newFieldGroup.innerHTML = `
+                    <input type="text" id="question-${fieldCount}" name="question-${fieldCount}" placeholder="Question ${fieldCount}" required>
+                    <input type="text" id="options-${fieldCount}" name="options-${fieldCount}" placeholder="Options (comma separated)">
+               `;
+               fieldsContainer.appendChild(newFieldGroup);
+          }
+
+          // Form submission event handler
+          document.getElementById('form-creator').addEventListener('submit', async function (e) {
+               e.preventDefault();
+
+               const formData = {
+                    title: document.getElementById('form-title').value,
+                    isPublic: document.querySelector('input[name="isPublic"]:checked').value === 'true',
+                    form: []
+               };
+
+               for (let i = 1; i <= fieldCount; i++) {
+                    const question = document.getElementById(`question-${i}`).value;
+                    const options = document.getElementById(`options-${i}`).value.split(',').map(opt => opt.trim());
+
+                    formData.form.push({
+                         question,
+                         options: options.filter(opt => opt !== "")
+                    });
+               }
+
+               const token = localStorage.getItem('token')
+               try {
+                    const response = await fetch('/api/form', {
+                         method: 'POST',
+                         headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `${token}`,
+                         },
+                         body: JSON.stringify(formData)
+                    });
+
+                    const messageArea = document.getElementById('response-message');
+
+                    if (response.ok) {
+                         const result = await response.json();
+                         messageArea.style.color = 'green';
+                         messageArea.innerText = `${result.message}`;
+                    } else {
+                         const errorData = await response.json();
+                         messageArea.style.color = 'red';
+                         messageArea.innerText = `Failed to submit the form: ${errorData.message}`;
+                    }
+               } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('response-message').style.color = 'red';
+                    document.getElementById('response-message').innerText = 'An error occurred while submitting the form.';
+               }
+          });
+
+          // Logout function
+          async function handleLogout() {
+               try {
+                    const response = await fetch('/api/logout', {
+                         method: 'POST',
+                         credentials: 'include'
+                    });
+
+                    if (response.ok) {
+                         const result = await response.json();
+                         console.log(result.message);
+                         localStorage.removeItem('token')
+                         window.location.href = '/login';
+                    } else {
+                         console.error('Failed to logout');
+                    }
+               } catch (error) {
+                    console.error('Error:', error);
+               }
+          }
+
+     </script>
+</body>
+
+</html>

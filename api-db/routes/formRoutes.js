@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
   try {
     const data = new FormModel({ ...req.body, createdBy: req.user._id });
     await data.save();
-    res.json({ message: "Form has been created" });
+    res.json({ message: "Form has been created", data });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went wrong" });
